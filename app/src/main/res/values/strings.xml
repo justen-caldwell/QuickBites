@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Quick Bites</string>
     <string name="title_activity_main">Quick Bites</string>
+    <string name="profile_activity">Profile</string>
 </resources>

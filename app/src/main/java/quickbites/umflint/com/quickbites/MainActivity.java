@@ -1,7 +1,7 @@
 package quickbites.umflint.com.quickbites;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,9 +38,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        // TODO 2: Find a way to get the lat and long of the user using a function
         LatLng sydney = new LatLng(-34, 151);
+        // TODO 1: Create a method that gets the location of restaurants and makes them into pins
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
