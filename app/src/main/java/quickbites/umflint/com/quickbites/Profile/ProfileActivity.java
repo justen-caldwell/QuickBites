@@ -71,7 +71,6 @@ public class ProfileActivity extends AppCompatActivity {
                 HashMap<String, String> current_item;
 
                 for (DataSnapshot menu_item : dataSnapshot.getChildren()) {
-                    menu_item = menu_item.child("Entrees");
                     current_item = (HashMap<String, String>) menu_item.getValue();
                     menuHashMap.add(current_item);
                 }

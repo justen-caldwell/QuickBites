@@ -39,10 +39,8 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
 
         HashMap<String, String> menu_item = food_list.get(position);
 
-        String testTest = menu_item.get("Name");
-
         holder.menu_name.setText(menu_item.get("Name"));
-        holder.menu_rating.setRating(Float.parseFloat(menu_item.get("Rating")));
+        holder.menu_rating.setRating((Float.valueOf(String.valueOf(menu_item.get("Rating")))));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
