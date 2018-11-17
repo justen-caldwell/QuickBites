@@ -3,6 +3,7 @@ package quickbites.umflint.com.quickbites.Profile;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -40,7 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
     @BindView(R.id.RatingsTitle)
     TextView ratingsTitle;
     private RecyclerView recyclerView;
-
+    private RecyclerView.LayoutManager layoutManager;
     private MenuListAdapter menuListAdapter;
     private DatabaseAccessor databaseAccessor;
 
@@ -52,15 +53,14 @@ public class ProfileActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         recyclerView = findViewById(R.id.RatingsRecyclerView);
         recyclerView.setAdapter(menuListAdapter);
+        layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
         setTitle("Profile");
 
         databaseAccessor = DatabaseAccessor.getInstance();
 
         Query query = databaseAccessor.getDatabaseReference()
-                .child("Restaurant")
-                .child("Churchills")
-                .child("MenuItem")
-                .child("Entrees");
+                .child("MenuItem");
 
         databaseAccessor.access(false, query, new DatabaseAccessor.OnGetDataListener() {
             @Override
@@ -68,10 +68,14 @@ public class ProfileActivity extends AppCompatActivity {
 
                 List<HashMap<String, String>> menuHashMap = new ArrayList<>();
 
+                HashMap<String, String> current_item;
+
                 for (DataSnapshot menu_item : dataSnapshot.getChildren()) {
-                    HashMap<String, String> current_item = (HashMap<String, String>) menu_item.getValue();
+                    menu_item = menu_item.child("Entrees");
+                    current_item = (HashMap<String, String>) menu_item.getValue();
                     menuHashMap.add(current_item);
                 }
+
                 menuListAdapter = new MenuListAdapter(menuHashMap);
                 recyclerView.setAdapter(menuListAdapter);
             }
