@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:label="Profile"
     tools:context=".Profile.ProfileActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,7 +24,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/RatingsRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="183dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -32,8 +34,8 @@
                     android:id="@+id/FavoritesTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Top 3 Favorites"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/top_3_favorites"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="@+id/FavoritesRecyclerView"
                     app:layout_constraintStart_toStartOf="@+id/FavoritesRecyclerView"
@@ -54,45 +56,58 @@
                     android:id="@+id/ProfilePicture"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
-                    app:civ_border_color="#EEEEEE"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/default_spradling"
+                    app:civ_border_color="#EFEFEF"
                     app:civ_border_width="4dp"
-                    app:civ_shadow="true"
+                    app:civ_shadow="false"
                     app:civ_shadow_color="#8BC34A"
                     app:civ_shadow_radius="10"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/NumOfRatings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="64dp"
-                    android:text="Number of Ratings: "
-                    app:layout_constraintBottom_toBottomOf="@+id/ProfilePicture"
-                    app:layout_constraintStart_toEndOf="@+id/ProfilePicture" />
+                    android:layout_marginStart="2dp"
+                    android:text="@string/number_of_ratings"
+                    app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
+                    app:layout_constraintTop_toBottomOf="@+id/LastName" />
 
                 <TextView
-                    android:id="@+id/ProfileName"
+                    android:id="@+id/FirstName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="50dp"
+                    android:text="@string/default_first_name"
+                    android:textSize="30sp"
+                    app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/LastName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginStart="2dp"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Justen Caldwell"
+                    android:text="@string/default_last_name"
                     android:textAlignment="center"
                     android:textSize="30sp"
                     android:typeface="normal"
                     app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
-                    app:layout_constraintTop_toTopOf="@+id/ProfilePicture" />
+                    app:layout_constraintTop_toBottomOf="@+id/FirstName" />
 
                 <TextView
                     android:id="@+id/RatingsTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Ratings"
+                    android:text="@string/ratings"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -102,7 +117,7 @@
                     android:id="@+id/RatingsNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text="@string/_0"
                     app:layout_constraintBottom_toBottomOf="@+id/NumOfRatings"
                     app:layout_constraintStart_toEndOf="@+id/NumOfRatings" />
             </android.support.constraint.ConstraintLayout>

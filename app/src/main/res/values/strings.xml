@@ -2,4 +2,12 @@
     <string name="app_name">Quick Bites</string>
     <string name="title_activity_main">Quick Bites</string>
     <string name="profile_activity">Profile</string>
+    <string name="top_3_favorites">Top 3 Favorites</string>
+    <string name="number_of_ratings">Number of Ratings: </string>
+    <string name="default_name">Matt Spradling</string>
+    <string name="default_first_name">Matthew</string>
+    <string name="default_last_name">Spradling</string>
+    <string name="ratings">Ratings</string>
+    <string name="_0">0</string>
+    <string name="default_food_name">Poutine</string>
 </resources>
