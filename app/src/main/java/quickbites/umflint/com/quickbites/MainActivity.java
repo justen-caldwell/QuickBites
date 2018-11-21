@@ -1,6 +1,10 @@
 package quickbites.umflint.com.quickbites;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -21,6 +25,7 @@ import java.util.List;
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private LatLng current_location;
 
     private static final int  RC_SIGN_IN = 0;
 
@@ -33,15 +38,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        List<AuthUI.IdpConfig> providers = Arrays.asList();
-                new AuthUI.IdpConfig.EmailBuilder().build();
+       // List<AuthUI.IdpConfig> providers = Arrays.asList();
+       //         new AuthUI.IdpConfig.EmailBuilder().build();
 
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                RC_SIGN_IN);
+        //startActivityForResult(
+        //        AuthUI.getInstance()
+        //                .createSignInIntentBuilder()
+        //                .setAvailableProviders(providers)
+        //                .build(),
+        //        RC_SIGN_IN);
 
     }
 
@@ -53,7 +58,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -78,12 +83,25 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // TODO 2: Find a way to get the lat and long of the user using a function
-        LatLng sydney = new LatLng(-34, 151);
-        // TODO 1: Create a method that gets the location of restaurants and makes them into pins
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                current_location = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(current_location));
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
 
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }

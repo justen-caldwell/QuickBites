@@ -1,4 +1,4 @@
-package quickbites.umflint.com.quickbites.Profile;
+package quickbites.umflint.com.quickbites;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import quickbites.umflint.com.quickbites.R;
 import quickbites.umflint.com.quickbites.Utilities.DatabaseAccessor;
+import quickbites.umflint.com.quickbites.Utilities.MenuListAdapter;
+import quickbites.umflint.com.quickbites.Utilities.RecyclerTouchListener;
 
 public class ProfileActivity extends AppCompatActivity {
 

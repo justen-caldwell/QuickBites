@@ -1,4 +1,4 @@
-package quickbites.umflint.com.quickbites.Profile;
+package quickbites.umflint.com.quickbites.Utilities;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
