@@ -15,7 +15,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -26,30 +25,36 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private LatLng current_location;
-
-    private static final int  RC_SIGN_IN = 0;
+    private static final String TAG = "MainActivity";
+    private static final int RC_SIGN_IN = 123;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_map_activity);
+
+        mAuth = FirebaseAuth.getInstance();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-       // List<AuthUI.IdpConfig> providers = Arrays.asList();
-       //         new AuthUI.IdpConfig.EmailBuilder().build();
 
-        //startActivityForResult(
-        //        AuthUI.getInstance()
-        //                .createSignInIntentBuilder()
-        //                .setAvailableProviders(providers)
-        //                .build(),
-        //        RC_SIGN_IN);
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build());
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
 
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -58,7 +63,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-        //        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -69,16 +74,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -99,9 +94,5 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public void onProviderDisabled(String provider) {}
         };
 
-
-
-
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }

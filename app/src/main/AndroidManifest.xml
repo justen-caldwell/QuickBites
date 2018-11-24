@@ -8,6 +8,7 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.location.gps" />
 
@@ -34,17 +35,18 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main">
+        </activity>
+
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="true"></activity>
+        <activity android:name=".SignupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="true">
-
-        </activity>
     </application>
 
 </manifest>
