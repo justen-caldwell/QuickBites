@@ -16,13 +16,35 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
+
+    @IgnoreExtraProperties
+    public class User {
+
+        public String email;
+
+        public User() {
+            // Default constructor required for calls to DataSnapshot.getValue(User.class)
+        }
+
+        public User(String email) {
+            this.email = email;
+        }
+
+    }
 
     private EditText inputEmail, inputPassword;
     private Button btnSignIn, btnSignUp;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private DatabaseReference database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +54,7 @@ public class SignupActivity extends AppCompatActivity {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
-
-        FirebaseUser user = auth.getCurrentUser();
+        database = FirebaseDatabase.getInstance().getReference("https://quickbites-ce4f7.firebaseio.com/");
 
 
         btnSignIn = findViewById(R.id.sign_in_button);
@@ -56,6 +77,8 @@ public class SignupActivity extends AppCompatActivity {
 
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
+
+
 
                 if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
@@ -87,6 +110,8 @@ public class SignupActivity extends AppCompatActivity {
                                     Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
+                                    User user = new User(auth.getCurrentUser().getEmail());
+                                    database.child("users").child(auth.getCurrentUser().getUid()).setValue(user);
                                     startActivity(new Intent(SignupActivity.this, UserRegister.class));
                                     finish();
                                 }

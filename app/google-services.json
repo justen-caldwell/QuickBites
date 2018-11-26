@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "460147808324-bagqs7d2q295777pefmikep6j0jmbm3l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "quickbites.umflint.com.quickbites",
+            "certificate_hash": "2706e8e1131ebeb4dfca78f0cc735a470ddc2ab1"
+          }
+        },
+        {
           "client_id": "460147808324-cprch5tkgsf1ffadn2jn2q503pp7iq6d.apps.googleusercontent.com",
           "client_type": 3
         }

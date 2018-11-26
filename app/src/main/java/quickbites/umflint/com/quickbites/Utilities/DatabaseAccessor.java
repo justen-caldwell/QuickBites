@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 public class DatabaseAccessor {
+
     private static final DatabaseAccessor main_instance = new DatabaseAccessor();
     private DatabaseReference databaseReference;
 
