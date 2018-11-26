@@ -10,29 +10,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import quickbites.umflint.com.quickbites.Utilities.DatabaseAccessor;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
-public class UserSignUp extends AppCompatActivity {
+public class UserRegister extends AppCompatActivity {
 
     private TextInputLayout textInputFirstName, textInputLastName, textInputPhone;
     private TextView accountTypeText, accountInformationText, selectedTypeText;
     private EditText inputFirstName, inputLastName, inputPhone;
     private Button customerButton, restaurantButton, submitButton;
-    private LinearLayout inputLinearLayout;
+    private LinearLayout inputLinearLayout, buttonContainer;
 
-    private DatabaseAccessor databaseAccessor;
 
     private boolean selectedProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_sign_up);
+        setContentView(R.layout.activity_user_register);
+        setTitle("Create Profile");
 
-        databaseAccessor = DatabaseAccessor.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            String userID = user.getUid();
+        }
 
+        buttonContainer = findViewById(R.id.ButtonContainer);
         inputLinearLayout = findViewById(R.id.InputLinearLayout);
         accountTypeText = findViewById(R.id.AccountTypeTextView);
         accountInformationText = findViewById(R.id.AccountInformationTextView);
@@ -49,6 +55,7 @@ public class UserSignUp extends AppCompatActivity {
 
         inputLinearLayout.setVisibility(View.GONE);
         selectedTypeText.setVisibility(View.INVISIBLE);
+        accountInformationText.setVisibility(View.INVISIBLE);
         textInputPhone.setHint("Phone Number");
 
         restaurantButton.setOnClickListener(new View.OnClickListener() {
@@ -59,12 +66,17 @@ public class UserSignUp extends AppCompatActivity {
                 textInputFirstName.setHint("Restaurant Name");
                 textInputLastName.setHint("Address");
 
+                accountTypeText.setVisibility(View.GONE);
+                buttonContainer.setVisibility(View.GONE);
+
+
                 if (textInputPhone.getVisibility() == View.GONE) {
                     textInputPhone.setVisibility(View.VISIBLE);
                 }
 
                 Animation slideIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fui_slide_in_right);
                 selectedTypeText.setVisibility(View.VISIBLE);
+                accountInformationText.setVisibility(View.VISIBLE);
                 inputLinearLayout.startAnimation(slideIn);
                 inputLinearLayout.setVisibility(View.VISIBLE);
 
@@ -78,10 +90,14 @@ public class UserSignUp extends AppCompatActivity {
                 textInputFirstName.setHint("First Name");
                 textInputLastName.setHint("Last Name");
                 selectedTypeText.setText("Account Type: Customer");
+
                 textInputPhone.setVisibility(View.GONE);
+                accountTypeText.setVisibility(View.GONE);
+                buttonContainer.setVisibility(View.GONE);
 
                 Animation slideIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fui_slide_in_right);
                 selectedTypeText.setVisibility(View.VISIBLE);
+                accountInformationText.setVisibility(View.VISIBLE);
                 inputLinearLayout.startAnimation(slideIn);
                 inputLinearLayout.setVisibility(View.VISIBLE);
             }
@@ -91,13 +107,32 @@ public class UserSignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //If the profile being created is a restaurant
-                if (selectedProfile) {
-                    //
-                } else {
-
+                if (selectedProfile == true) {
+                    Toast.makeText(getApplicationContext(), "Select Account Type", Toast.LENGTH_SHORT).show();
+                }
+                else if (selectedProfile == false){
+                    Toast.makeText(getApplicationContext(), "Select Account Type", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Select Account Type", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
 
+
+    @Override
+    public void onBackPressed(){
+        if (accountTypeText.getVisibility() == View.GONE){
+            selectedTypeText.setVisibility(View.GONE);
+            accountInformationText.setVisibility(View.GONE);
+
+            if(inputLinearLayout.getVisibility() == View.VISIBLE) {
+                inputLinearLayout.setVisibility(View.GONE);
+            }
+
+            accountTypeText.setVisibility(View.VISIBLE);
+            buttonContainer.setVisibility(View.VISIBLE);
+        }
     }
 }
