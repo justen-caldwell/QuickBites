@@ -17,6 +17,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import quickbites.umflint.com.quickbites.Utilities.DatabaseAccessor;
 
 public class UserSignIn extends AppCompatActivity {
 
@@ -24,6 +37,7 @@ public class UserSignIn extends AppCompatActivity {
     private Button btnSignIn, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private DatabaseAccessor databaseAccessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +47,9 @@ public class UserSignIn extends AppCompatActivity {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
-
-        FirebaseUser user = auth.getCurrentUser();
+        if (auth != null) {
+            auth.signOut();
+        }
 
         btnSignIn = findViewById(R.id.sign_in_button);
         inputEmail = findViewById(R.id.email);
@@ -66,11 +81,6 @@ public class UserSignIn extends AppCompatActivity {
                     return;
                 }
 
-                if (password.length() < 6) {
-                    Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 progressBar.setVisibility(View.VISIBLE);
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(UserSignIn.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -80,14 +90,56 @@ public class UserSignIn extends AppCompatActivity {
 
                         if (!task.isSuccessful()) {
                             Toast.makeText(UserSignIn.this, "Authentication failed." + task.getException(), Toast.LENGTH_SHORT).show();
-                        } else {
-                            FirebaseUser user = auth.getCurrentUser();
-                            if (user != null) {
-                                startActivity(new Intent(UserSignIn.this, MainActivity.class));
-                                finish();
-                            }
                         }
+                        else{
+                            FirebaseUser user = auth.getCurrentUser();
+                            final String userID = user.getUid();
+                            databaseAccessor = DatabaseAccessor.getInstance();
+                            Query check_signup_status = databaseAccessor.getDatabaseReference().child("users");
 
+                            databaseAccessor.access(false, check_signup_status, new DatabaseAccessor.OnGetDataListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    HashMap<String, Object> current_user;
+
+                                    for (DataSnapshot this_user : dataSnapshot.getChildren()){
+                                        String tempKey = this_user.getKey();
+                                        current_user = (HashMap<String, Object>)this_user.getValue();
+                                        if(tempKey.equals("customers")) {
+                                            Iterator it = current_user.entrySet().iterator();
+                                            while (it.hasNext()){
+                                                Map.Entry current_entry = (Map.Entry)it.next();
+                                                if(current_entry.getKey().equals(userID)){
+                                                    startActivity(new Intent(UserSignIn.this, MainActivity.class));
+                                                    finish();
+                                                }
+                                                it.remove();
+                                            }
+                                        }
+                                        if(tempKey.equals("restaurants")) {
+                                            Iterator it = current_user.entrySet().iterator();
+                                            while (it.hasNext()){
+                                                Map.Entry current_entry = (Map.Entry)it.next();
+                                                if(current_entry.getKey().equals(userID)){
+                                                    startActivity(new Intent(UserSignIn.this, RestaurantMenuManagment.class));
+                                                    finish();
+                                                }
+                                                it.remove();
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+                                startActivity(new Intent(UserSignIn.this, UserRegister.class));
+                                finish();
+                        }
                     }
                 });
             }

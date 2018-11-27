@@ -46,7 +46,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".UserRegister" />
-        <activity android:name=".UserSignIn"></activity>
+        <activity android:name=".UserSignIn" />
+        <activity android:name=".RestaurantMenuManagment"></activity>
     </application>
 
 </manifest>

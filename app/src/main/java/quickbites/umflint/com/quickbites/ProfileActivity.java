@@ -66,8 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         databaseAccessor.access(false, query, new DatabaseAccessor.OnGetDataListener() {
             @Override
-            public void onSuccessfulAdd(DataSnapshot dataSnapshot) {
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 List<HashMap<String, String>> menuHashMap = new ArrayList<>();
 
                 HashMap<String, String> current_item;
@@ -82,22 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onSuccessfulChange(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onSuccessfulRemoval(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onSuccessfulMove(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onFailure(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
@@ -117,3 +101,6 @@ public class ProfileActivity extends AppCompatActivity {
         }));
     }
 }
+
+
+

@@ -25,21 +25,6 @@ import java.util.Map;
 
 public class SignupActivity extends AppCompatActivity {
 
-    @IgnoreExtraProperties
-    public class User {
-
-        public String email;
-
-        public User() {
-            // Default constructor required for calls to DataSnapshot.getValue(User.class)
-        }
-
-        public User(String email) {
-            this.email = email;
-        }
-
-    }
-
     private EditText inputEmail, inputPassword;
     private Button btnSignIn, btnSignUp;
     private ProgressBar progressBar;
@@ -54,7 +39,6 @@ public class SignupActivity extends AppCompatActivity {
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance().getReference("https://quickbites-ce4f7.firebaseio.com/");
 
 
         btnSignIn = findViewById(R.id.sign_in_button);
@@ -110,8 +94,6 @@ public class SignupActivity extends AppCompatActivity {
                                     Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
-                                    User user = new User(auth.getCurrentUser().getEmail());
-                                    database.child("users").child(auth.getCurrentUser().getUid()).setValue(user);
                                     startActivity(new Intent(SignupActivity.this, UserRegister.class));
                                     finish();
                                 }

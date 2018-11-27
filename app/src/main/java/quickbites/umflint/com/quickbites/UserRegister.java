@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.FileInputStream;
@@ -31,6 +34,38 @@ import java.io.InputStream;
 
 
 public class UserRegister extends AppCompatActivity {
+
+    public static class Customer{
+        public String email;
+        public String firstName;
+        public String lastName;
+
+        public Customer(){}
+
+        public Customer(String email_in, String fName_in, String lName_in){
+            email = email_in;
+            firstName = fName_in;
+            lastName = lName_in;
+        }
+    }
+
+    public static class Restaurant{
+        public String email;
+        public String restaurantName;
+        public String fullAddress;
+        public String phoneNumber;
+
+        public Restaurant(){}
+
+        public Restaurant(String email_in, String rName_in, String address_in, String phone_in){
+            email = email_in;
+            restaurantName = rName_in;
+            fullAddress = address_in;
+            phoneNumber = phone_in;
+        }
+    }
+
+
 
     private TextInputLayout textInputFirstName, textInputLastName, textInputAddress, textInputState, textInputZip, textInputPhone;
     private TextView accountTypeText, accountInformationText, selectedTypeText, selectProfilePicture;
@@ -49,12 +84,13 @@ public class UserRegister extends AppCompatActivity {
         setTitle("Create Profile");
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user != null){
-            String userID = user.getUid();
-        }
+        final String userID = user.getUid();
+        final String userEmail = user.getEmail();
 
 
-
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference mDatabase = database.getReference();
+        final DatabaseReference ref = mDatabase.getRef().child("users");
 
         // Text prompts
         selectProfilePicture = findViewById(R.id.ProfilePicSelectionText);
@@ -86,6 +122,9 @@ public class UserRegister extends AppCompatActivity {
         // Containers
         buttonContainer = findViewById(R.id.ButtonContainer);
         inputLinearLayout = findViewById(R.id.InputLinearLayout);
+
+        // Images
+        profilePicture = findViewById(R.id.ProfilePicture);
 
         // Initial hides for onCreate format
         inputLinearLayout.setVisibility(View.GONE);
@@ -169,40 +208,58 @@ public class UserRegister extends AppCompatActivity {
                     String zipCode = inputZip.getText().toString().trim();
                     String phoneNum = inputPhone.getText().toString().trim();
 
+
                     if (TextUtils.isEmpty(restaurantName)) {
-                        Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Enter A Restaurant Name", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (TextUtils.isEmpty(address)) {
-                        Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Enter An Address", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (TextUtils.isEmpty(state)) {
-                        Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Enter A State", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (TextUtils.isEmpty(zipCode)) {
-                        Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Enter A ZipCode", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (TextUtils.isEmpty(phoneNum)) {
-                        Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Enter A Phone Number", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     String fullAddress = address + ", " + state + " " + zipCode;
-
-
-
-
+                    Restaurant restaurant = new Restaurant(userEmail, restaurantName, fullAddress, phoneNum);
+                    ref.child("restaurants").child(userID).setValue(restaurant);
                     Toast.makeText(getApplicationContext(), "Restaurant Account Created", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(UserRegister.this, RestaurantMenuManagment.class));
+                    finish();
                 }
                 else if (selectedProfile == false){
-                    Toast.makeText(getApplicationContext(), "Select Account Type", Toast.LENGTH_SHORT).show();
+                    String firstName = inputFirstName.getText().toString().trim();
+                    String lastName = inputLastName.getText().toString().trim();
+
+                    if (TextUtils.isEmpty(firstName)) {
+                        Toast.makeText(getApplicationContext(), "Enter A First Name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (TextUtils.isEmpty(lastName)) {
+                        Toast.makeText(getApplicationContext(), "Enter A Last Name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    Customer customer = new Customer(userEmail, firstName, lastName);
+                    ref.child("customers").child(userID).setValue(customer);
+                    Toast.makeText(getApplicationContext(), "Customer Account Created", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(UserRegister.this, MainActivity.class));
+                    finish();
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Select Account Type", Toast.LENGTH_SHORT).show();
