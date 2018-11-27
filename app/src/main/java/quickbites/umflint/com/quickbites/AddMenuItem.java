@@ -20,13 +20,17 @@ public class AddMenuItem extends AppCompatActivity {
         public String item_name;
         public String item_price;
         public String item_description;
+        public String menu_category;
+        public String item_owner;
 
         public MenuItem(){}
 
-        public MenuItem(String item_nameIn, String item_priceIn, String item_descriptionIn){
+        public MenuItem(String item_nameIn, String item_priceIn, String item_descriptionIn, String menu_categoryIn, String item_ownerIn){
             item_name = item_nameIn;
             item_price = item_priceIn;
             item_description = item_descriptionIn;
+            menu_category = menu_categoryIn;
+            item_owner = item_ownerIn;
         }
     }
 
@@ -81,7 +85,7 @@ public class AddMenuItem extends AppCompatActivity {
                     return;
                 }
 
-                MenuItem menuItem = new MenuItem(menuName, menuPrice, menuDescription);
+                MenuItem menuItem = new MenuItem(menuName, menuPrice, menuDescription, menuCategory, userID);
                 reference.child(userID).child(menuCategory).child(menuName).setValue(menuItem);
                 startActivity(new Intent(AddMenuItem.this, RestaurantMenuManagement.class));
                 finish();

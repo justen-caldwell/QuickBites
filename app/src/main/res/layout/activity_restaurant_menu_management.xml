@@ -6,43 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".RestaurantMenuManagement">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/RestaurantTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="Churchill's Food and Spirit's Menu"
+            android:textAlignment="textStart"
+            android:textSize="40sp"
+            android:textStyle="italic" />
 
-            <TextView
-                android:id="@+id/RestaurantTitle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Churchill's Food and Spirit's Menu"
-                android:textAlignment="center"
-                android:textSize="32sp" />
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/MenuCardRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="356dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/MenuCardRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="356dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp" />
 
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -65,15 +64,6 @@
             android:layout_weight="1"
             android:background="@color/bg_login"
             android:text="Add A Menu Item" />
-
-        <Button
-            android:id="@+id/RemoveMenuItem"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_weight="1"
-            android:background="@color/bg_login"
-            android:text="Remove A Menu Item" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

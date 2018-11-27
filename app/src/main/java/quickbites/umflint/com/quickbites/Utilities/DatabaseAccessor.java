@@ -30,6 +30,8 @@ public class DatabaseAccessor {
         return databaseReference;
     }
 
+
+
     public void access(final boolean continuousUpdating, final Query locationQuery, final DatabaseAccessor.OnGetDataListener listener) {
         locationQuery.addValueEventListener(new ValueEventListener() {
             @Override
@@ -45,6 +47,7 @@ public class DatabaseAccessor {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
 //        locationQuery.addChildEventListener(new ChildEventListener() {
 //            @Override
