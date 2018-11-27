@@ -34,18 +34,18 @@
                     android:id="@+id/FavoritesTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/top_3_favorites"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Favorites"
                     android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="@+id/FavoritesRecyclerView"
                     app:layout_constraintStart_toStartOf="@+id/FavoritesRecyclerView"
-                    app:layout_constraintTop_toBottomOf="@+id/ProfilePicture" />
+                    app:layout_constraintTop_toBottomOf="@+id/NumOfRatings" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/FavoritesRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="181dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginBottom="2dp"
                     android:clickable="false"
                     app:layout_constraintBottom_toTopOf="@+id/RatingsTitle"
@@ -56,14 +56,15 @@
                     android:id="@+id/ProfilePicture"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
                     android:src="@drawable/default_spradling"
                     app:civ_border_color="#EFEFEF"
                     app:civ_border_width="4dp"
                     app:civ_shadow="false"
                     app:civ_shadow_color="#8BC34A"
                     app:civ_shadow_radius="10"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,34 +72,29 @@
                     android:id="@+id/NumOfRatings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:text="@string/number_of_ratings"
-                    app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
-                    app:layout_constraintTop_toBottomOf="@+id/LastName" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Ratings: 0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/FirstName" />
 
                 <TextView
                     android:id="@+id/FirstName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="50dp"
-                    android:text="@string/default_first_name"
-                    android:textSize="30sp"
-                    app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/LastName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
-                    android:fontFamily="sans-serif-condensed"
-                    android:text="@string/default_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="39dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:autoSizeMaxTextSize="100sp"
+                    android:autoSizeMinTextSize="12dp"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="Matthew Spradling"
                     android:textAlignment="center"
-                    android:textSize="30sp"
-                    android:typeface="normal"
-                    app:layout_constraintStart_toEndOf="@+id/ProfilePicture"
-                    app:layout_constraintTop_toBottomOf="@+id/FirstName" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ProfilePicture" />
 
                 <TextView
                     android:id="@+id/RatingsTitle"
@@ -106,20 +102,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
                     android:text="@string/ratings"
                     android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/FavoritesRecyclerView" />
 
-                <TextView
-                    android:id="@+id/RatingsNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/_0"
-                    app:layout_constraintBottom_toBottomOf="@+id/NumOfRatings"
-                    app:layout_constraintStart_toEndOf="@+id/NumOfRatings" />
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

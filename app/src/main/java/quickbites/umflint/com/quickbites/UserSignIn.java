@@ -121,7 +121,7 @@ public class UserSignIn extends AppCompatActivity {
                                             while (it.hasNext()){
                                                 Map.Entry current_entry = (Map.Entry)it.next();
                                                 if(current_entry.getKey().equals(userID)){
-                                                    startActivity(new Intent(UserSignIn.this, RestaurantMenuManagment.class));
+                                                    startActivity(new Intent(UserSignIn.this, RestaurantMenuManagement.class));
                                                     finish();
                                                 }
                                                 it.remove();

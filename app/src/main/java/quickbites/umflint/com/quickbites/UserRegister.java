@@ -238,7 +238,7 @@ public class UserRegister extends AppCompatActivity {
                     Restaurant restaurant = new Restaurant(userEmail, restaurantName, fullAddress, phoneNum);
                     ref.child("restaurants").child(userID).setValue(restaurant);
                     Toast.makeText(getApplicationContext(), "Restaurant Account Created", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(UserRegister.this, RestaurantMenuManagment.class));
+                    startActivity(new Intent(UserRegister.this, RestaurantMenuManagement.class));
                     finish();
                 }
                 else if (selectedProfile == false){
