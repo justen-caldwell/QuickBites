@@ -39,8 +39,9 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
 
         HashMap<String, String> menu_item = food_list.get(position);
 
-        holder.menu_name.setText(menu_item.get("Name"));
-        holder.menu_rating.setRating((Float.valueOf(String.valueOf(menu_item.get("Rating")))));
+        holder.menu_price.setText(menu_item.get("item_price"));
+        holder.menu_name.setText(menu_item.get("item_name"));
+        //holder.menu_rating.setRating((Float.valueOf(String.valueOf(menu_item.get("Rating")))));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -50,15 +51,15 @@ public class MenuListAdapter extends RecyclerView.Adapter<MenuListAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView menu_image;
         public TextView menu_name;
         public RatingBar menu_rating;
+        public TextView menu_price;
 
         public ViewHolder(View view) {
             super(view);
             menu_name = view.findViewById(R.id.menu_item_name);
-            menu_image = view.findViewById(R.id.menu_item_picture);
             menu_rating = view.findViewById(R.id.menu_item_rating);
+            menu_price = view.findViewById(R.id.menu_price);
         }
     }
 

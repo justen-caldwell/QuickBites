@@ -47,7 +47,8 @@
         </activity>
         <activity android:name=".UserRegister" />
         <activity android:name=".UserSignIn" />
-        <activity android:name=".RestaurantMenuManagment"></activity>
+        <activity android:name=".RestaurantMenuManagement" />
+        <activity android:name=".AddMenuItem"></activity>
     </application>
 
 </manifest>

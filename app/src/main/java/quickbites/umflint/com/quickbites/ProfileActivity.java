@@ -30,12 +30,8 @@ public class ProfileActivity extends AppCompatActivity {
     CircularImageView profilePicture;
     @BindView(R.id.FirstName)
     TextView firstName;
-    @BindView(R.id.LastName)
-    TextView lastName;
     @BindView(R.id.NumOfRatings)
     TextView numOfRatings;
-    @BindView(R.id.RatingsNumber)
-    TextView ratingsNumber;
     @BindView(R.id.FavoritesTitle)
     TextView favoritesTitle;
     @BindView(R.id.FavoritesRecyclerView)
@@ -68,7 +64,6 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 List<HashMap<String, String>> menuHashMap = new ArrayList<>();
-
                 HashMap<String, String> current_item;
 
                 for (DataSnapshot menu_item : dataSnapshot.getChildren()) {
