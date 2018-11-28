@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -19,14 +18,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import quickbites.umflint.com.quickbites.Utilities.DatabaseAccessor;
@@ -121,7 +116,9 @@ public class UserSignIn extends AppCompatActivity {
                                             while (it.hasNext()){
                                                 Map.Entry current_entry = (Map.Entry)it.next();
                                                 if(current_entry.getKey().equals(userID)){
-                                                    startActivity(new Intent(UserSignIn.this, RestaurantMenuManagement.class));
+                                                    Intent intent = new Intent(getBaseContext(), ViewMenu.class);
+                                                    intent.putExtra("ITEM_OWNER", userID);
+                                                    startActivity(intent);
                                                     finish();
                                                 }
                                                 it.remove();

@@ -1,5 +1,6 @@
 package quickbites.umflint.com.quickbites.Utilities;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -30,7 +31,9 @@ public class DatabaseAccessor {
         return databaseReference;
     }
 
-
+    public void remove(final Query dataQuery){
+        databaseReference.removeValue();
+    }
 
     public void access(final boolean continuousUpdating, final Query locationQuery, final DatabaseAccessor.OnGetDataListener listener) {
         locationQuery.addValueEventListener(new ValueEventListener() {

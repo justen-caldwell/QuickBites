@@ -87,12 +87,16 @@ public class AddMenuItem extends AppCompatActivity {
 
                 MenuItem menuItem = new MenuItem(menuName, menuPrice, menuDescription, menuCategory, userID);
                 reference.child(userID).child(menuCategory).child(menuName).setValue(menuItem);
-                startActivity(new Intent(AddMenuItem.this, RestaurantMenuManagement.class));
+                startActivity(new Intent(AddMenuItem.this, ViewMenu.class));
                 finish();
 
             }
         });
+    }
 
-
+    @Override
+    public void onBackPressed(){
+        startActivity(new Intent(AddMenuItem.this, ViewMenu.class));
+        finish();
     }
 }

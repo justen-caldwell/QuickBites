@@ -7,8 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -18,17 +16,14 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import quickbites.umflint.com.quickbites.Utilities.DatabaseAccessor;
 import quickbites.umflint.com.quickbites.Utilities.MenuListAdapter;
 import quickbites.umflint.com.quickbites.Utilities.RecyclerTouchListener;
 
-public class RestaurantMenuManagement extends AppCompatActivity {
+public class ViewMenu extends AppCompatActivity {
 
-    private Button addMenuItem, removeMenuItem;
-    private TextView restaurantTitle;
+    private Button addMenuItem;
     private RecyclerView menu;
     private RecyclerView.LayoutManager layoutManager;
     private MenuListAdapter menuListAdapter;
@@ -38,30 +33,37 @@ public class RestaurantMenuManagement extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant_menu_management);
-        setTitle("Menu Management");
+        setContentView(R.layout.activity_view_menu);
+
+        final String menu_itemOwner = getIntent().getStringExtra("ITEM_OWNER");
 
         final String userID = auth.getUid();
+
         databaseAccessor = DatabaseAccessor.getInstance();
 
-        Query name_query = databaseAccessor.getDatabaseReference().child("users").child("restaurants").child(userID).child("restaurantName");
-        Query menu_query = databaseAccessor.getDatabaseReference().child("menu_items").child(userID);
+        final Query owner_query = databaseAccessor.getDatabaseReference().child("users").child("restaurants").child(menu_itemOwner).child("restaurantName");
+        final Query menu_query = databaseAccessor.getDatabaseReference().child("menu_items").child(menu_itemOwner);
 
         addMenuItem = findViewById(R.id.AddMenuItem);
-        restaurantTitle = findViewById(R.id.RestaurantTitle);
         menu = findViewById(R.id.MenuCardRecycler);
         menu.setAdapter(menuListAdapter);
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         menu.setLayoutManager(layoutManager);
 
-        databaseAccessor.access(false, name_query, new DatabaseAccessor.OnGetDataListener() {
+        addMenuItem.setVisibility(View.GONE);
+        if(menu_itemOwner.equals(userID)){
+            addMenuItem.setVisibility(View.VISIBLE);
+        }
+
+
+        databaseAccessor.access(false, owner_query, new DatabaseAccessor.OnGetDataListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String username_snapshot = dataSnapshot.getValue().toString();
                 String[] snapshot_array = username_snapshot.split("\\=");
                 username_snapshot = snapshot_array[0];
                 username_snapshot = username_snapshot + "'s Menu";
-                restaurantTitle.setText(username_snapshot);
+                setTitle(username_snapshot);
             }
 
             @Override
@@ -102,7 +104,7 @@ public class RestaurantMenuManagement extends AppCompatActivity {
         addMenuItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(RestaurantMenuManagement.this, AddMenuItem.class));
+                startActivity(new Intent(ViewMenu.this, AddMenuItem.class));
                 finish();
             }
         });
@@ -121,7 +123,7 @@ public class RestaurantMenuManagement extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(), ViewMenuItem.class);
                 intent.putExtra("ITEM_NAME", item_to_open);
                 intent.putExtra("ITEM_HEADER", header_to_open);
-                intent.putExtra("ITEM_OWNER", userID);
+                intent.putExtra("ITEM_OWNER", menu_itemOwner);
                 startActivity(intent);
             }
         }));

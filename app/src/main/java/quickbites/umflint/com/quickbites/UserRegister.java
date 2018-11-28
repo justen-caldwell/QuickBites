@@ -1,14 +1,10 @@
 package quickbites.umflint.com.quickbites;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -17,7 +13,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
@@ -39,13 +33,15 @@ public class UserRegister extends AppCompatActivity {
         public String email;
         public String firstName;
         public String lastName;
+        public String uniqueID;
 
         public Customer(){}
 
-        public Customer(String email_in, String fName_in, String lName_in){
+        public Customer(String email_in, String fName_in, String lName_in, String uniqueID_in){
             email = email_in;
             firstName = fName_in;
             lastName = lName_in;
+            uniqueID = uniqueID_in;
         }
     }
 
@@ -54,14 +50,16 @@ public class UserRegister extends AppCompatActivity {
         public String restaurantName;
         public String fullAddress;
         public String phoneNumber;
+        public String uniqueID;
 
         public Restaurant(){}
 
-        public Restaurant(String email_in, String rName_in, String address_in, String phone_in){
+        public Restaurant(String email_in, String rName_in, String address_in, String phone_in, String uniqueID_in){
             email = email_in;
             restaurantName = rName_in;
             fullAddress = address_in;
             phoneNumber = phone_in;
+            uniqueID = uniqueID_in;
         }
     }
 
@@ -235,10 +233,12 @@ public class UserRegister extends AppCompatActivity {
                     }
 
                     String fullAddress = address + ", " + state + " " + zipCode;
-                    Restaurant restaurant = new Restaurant(userEmail, restaurantName, fullAddress, phoneNum);
+                    Restaurant restaurant = new Restaurant(userEmail, restaurantName, fullAddress, phoneNum, userID);
                     ref.child("restaurants").child(userID).setValue(restaurant);
                     Toast.makeText(getApplicationContext(), "Restaurant Account Created", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(UserRegister.this, RestaurantMenuManagement.class));
+                    Intent intent = new Intent(getBaseContext(), ViewMenu.class);
+                    intent.putExtra("ITEM_OWNER", userID);
+                    startActivity(intent);
                     finish();
                 }
                 else if (selectedProfile == false){
@@ -255,7 +255,7 @@ public class UserRegister extends AppCompatActivity {
                         return;
                     }
 
-                    Customer customer = new Customer(userEmail, firstName, lastName);
+                    Customer customer = new Customer(userEmail, firstName, lastName, userID);
                     ref.child("customers").child(userID).setValue(customer);
                     Toast.makeText(getApplicationContext(), "Customer Account Created", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(UserRegister.this, MainActivity.class));
