@@ -50,6 +50,7 @@ public class ViewMenu extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         menu.setLayoutManager(layoutManager);
 
+
         addMenuItem.setVisibility(View.GONE);
         if(menu_itemOwner.equals(userID)){
             addMenuItem.setVisibility(View.VISIBLE);

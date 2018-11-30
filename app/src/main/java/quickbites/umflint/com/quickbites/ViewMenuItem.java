@@ -1,10 +1,12 @@
 package quickbites.umflint.com.quickbites;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +23,7 @@ public class ViewMenuItem extends AppCompatActivity {
 
     private TextView itemName, descriptionText, priceLabel, priceAmount, descriptionLabel;
     private Button deleteButton, rateButton;
-
+    private FrameLayout fragmentPlaceholder;
     private DatabaseAccessor databaseAccessor;
 
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -45,8 +47,17 @@ public class ViewMenuItem extends AppCompatActivity {
         rateButton = findViewById(R.id.RateButton);
         deleteButton = findViewById(R.id.DeleteButton);
 
+        fragmentPlaceholder.findViewById(R.id.your_placeholder);
+
         rateButton.setVisibility(View.GONE);
         deleteButton.setVisibility(View.GONE);
+
+
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.your_placeholder, new RatingFragment());
+        fragmentTransaction.commit();
+
 
         final String userID = auth.getCurrentUser().getUid();
         databaseAccessor = DatabaseAccessor.getInstance();
@@ -100,6 +111,13 @@ public class ViewMenuItem extends AppCompatActivity {
                 intent.putExtra("ITEM_OWNER", userID);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        rateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

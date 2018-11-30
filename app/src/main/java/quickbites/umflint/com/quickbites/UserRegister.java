@@ -97,8 +97,8 @@ public class UserRegister extends AppCompatActivity {
         selectedTypeText = findViewById(R.id.SelectedTypeTextView);
 
         // Buttons
-        restaurantButton = findViewById(R.id.RestaurantButton);
-        customerButton = findViewById(R.id.CustomerButton);
+        restaurantButton = findViewById(R.id.Fragment_SubmitButton);
+        customerButton = findViewById(R.id.Fragment_CancelButton);
         submitButton = findViewById(R.id.SubmitButton);
 
         // Text inputs
