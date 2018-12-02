@@ -52,7 +52,7 @@ public class AddMenuItem extends AppCompatActivity {
         final String userID = auth.getUid();
 
 
-        submitButton = findViewById(R.id.CancelButton);
+        submitButton = findViewById(R.id.SubmitButton);
         name = findViewById(R.id.InputMenuName);
         price = findViewById(R.id.InputPrice);
         description = findViewById(R.id.InputDescription);
@@ -87,7 +87,9 @@ public class AddMenuItem extends AppCompatActivity {
 
                 MenuItem menuItem = new MenuItem(menuName, menuPrice, menuDescription, menuCategory, userID);
                 reference.child(userID).child(menuCategory).child(menuName).setValue(menuItem);
-                startActivity(new Intent(AddMenuItem.this, ViewMenu.class));
+                Intent intent = new Intent(getBaseContext(), ViewMenu.class);
+                intent.putExtra("ITEM_OWNER", userID);
+                startActivity(intent);
                 finish();
 
             }

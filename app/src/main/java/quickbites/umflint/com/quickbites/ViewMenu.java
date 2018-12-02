@@ -28,6 +28,8 @@ public class ViewMenu extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private MenuListAdapter menuListAdapter;
     private DatabaseAccessor databaseAccessor;
+    String userID;
+    String menu_itemOwner;
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
@@ -35,9 +37,9 @@ public class ViewMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_menu);
 
-        final String menu_itemOwner = getIntent().getStringExtra("ITEM_OWNER");
+        menu_itemOwner = getIntent().getStringExtra("ITEM_OWNER");
 
-        final String userID = auth.getUid();
+        userID = auth.getUid();
 
         databaseAccessor = DatabaseAccessor.getInstance();
 
@@ -57,7 +59,7 @@ public class ViewMenu extends AppCompatActivity {
         }
 
 
-        databaseAccessor.access(false, owner_query, new DatabaseAccessor.OnGetDataListener() {
+        databaseAccessor.access(true, owner_query, new DatabaseAccessor.OnGetDataListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String username_snapshot = dataSnapshot.getValue().toString();
@@ -74,7 +76,7 @@ public class ViewMenu extends AppCompatActivity {
         });
 
         final List<HashMap<String, String>> menuHashMap = new ArrayList<>();
-        databaseAccessor.access(false, menu_query, new DatabaseAccessor.OnGetDataListener() {
+        databaseAccessor.access(true, menu_query, new DatabaseAccessor.OnGetDataListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 HashMap<String,String> current_item;
@@ -129,6 +131,15 @@ public class ViewMenu extends AppCompatActivity {
             }
         }));
 
+    }
 
+    @Override
+    public void onBackPressed(){
+        if(userID.equals(menu_itemOwner)){
+
+        }
+        else{
+            super.onBackPressed();
+        }
     }
 }

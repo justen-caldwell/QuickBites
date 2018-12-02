@@ -1,11 +1,17 @@
 package quickbites.umflint.com.quickbites.Utilities;
 
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
+import android.text.style.TtsSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,13 +69,41 @@ public class MenuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         switch(holder.getItemViewType()){
             case HEADER:
-                ViewHolder_Header v_header = (ViewHolder_Header) holder;
+                final ViewHolder_Header v_header = (ViewHolder_Header) holder;
                 v_header.header_name.setText(menu_item.get("item_header"));
+
                 break;
             case ITEM:
-                ViewHolder_MenuItem v_item =  (ViewHolder_MenuItem) holder;
+                final ViewHolder_MenuItem v_item =  (ViewHolder_MenuItem) holder;
                 v_item.menu_price.setText(menu_item.get("item_price"));
                 v_item.menu_name.setText(menu_item.get("item_name"));
+
+                final DatabaseAccessor databaseAccessor = DatabaseAccessor.getInstance();
+                Query rating_query = databaseAccessor.getDatabaseReference().child("ratings_by_item").child(menu_item.get("item_owner")).child(menu_item.get("item_name"));
+                databaseAccessor.access(true, rating_query, new DatabaseAccessor.OnGetDataListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChildren()) {
+                            double total_rating = 0.0;
+                            int num_of_ratings = (int) dataSnapshot.getChildrenCount();
+                            for (DataSnapshot rating : dataSnapshot.getChildren()) {
+                                total_rating += Double.parseDouble(rating.child("ratingNumber").getValue().toString());
+                            }
+                            total_rating /= num_of_ratings;
+                            v_item.menu_rating.setRating((float) total_rating);
+                            v_item.menu_rating.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            v_item.menu_rating.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 break;
         }
     }

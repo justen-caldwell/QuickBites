@@ -137,6 +137,7 @@ public class ViewMenuItem extends AppCompatActivity {
         databaseAccessor.access(true, rating_query, new DatabaseAccessor.OnGetDataListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                ratingsList.clear();
                 for (DataSnapshot rating : dataSnapshot.getChildren()) {
                     ratingsList.add((HashMap<String, String>) rating.getValue());
                 }

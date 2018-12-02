@@ -54,6 +54,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private FloatingActionButton profileButton;
     private DatabaseAccessor databaseAccessor;
+    private LatLng originalPosition;
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
@@ -160,7 +161,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-        databaseAccessor.access(false, location_query, new DatabaseAccessor.OnGetDataListener() {
+        databaseAccessor.access(true, location_query, new DatabaseAccessor.OnGetDataListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String current_address;
@@ -184,7 +185,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
                     @Override
                     public void onMarkerDragStart(Marker marker) {
-                        marker.setDraggable(false);
+                        originalPosition = marker.getPosition();
                         String uniqueID = marker.getTag().toString();
                         Toast.makeText(getApplicationContext(),"Clicked on: " + marker.getTitle() + " @ " + marker.getTag(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), ViewMenu.class);
@@ -194,11 +195,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                     @Override
                     public void onMarkerDrag(Marker marker) {
-
+                        marker.setPosition(originalPosition);
                     }
 
                     @Override
                     public void onMarkerDragEnd(Marker marker) {
+
                     }
                 });
 

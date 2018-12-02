@@ -59,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
         Query query = databaseAccessor.getDatabaseReference().child("ratings_by_user").child(profile_uid);
         Query user_information = databaseAccessor.getDatabaseReference().child("users").child("customers").child(profile_uid);
 
-        databaseAccessor.access(false, user_information, new DatabaseAccessor.OnGetDataListener() {
+        databaseAccessor.access(true, user_information, new DatabaseAccessor.OnGetDataListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 HashMap<String, String> user_data = (HashMap<String, String>) dataSnapshot.getValue();
@@ -72,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        databaseAccessor.access(false, query, new DatabaseAccessor.OnGetDataListener() {
+        databaseAccessor.access(true, query, new DatabaseAccessor.OnGetDataListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot rating : dataSnapshot.getChildren()) {

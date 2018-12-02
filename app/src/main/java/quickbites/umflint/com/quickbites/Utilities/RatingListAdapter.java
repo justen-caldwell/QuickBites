@@ -36,7 +36,7 @@ public class RatingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         HashMap<String, String> rating = rating_list.get(position);
-        ViewHolder vh = (ViewHolder) holder;
+        ViewHolder vh =(ViewHolder) holder;
         vh.username.setText(rating.get("userName"));
         vh.ratingBar.setRating(Float.parseFloat(rating.get("ratingNumber")));
     }
