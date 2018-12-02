@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -19,9 +20,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import quickbites.umflint.com.quickbites.R;
 import quickbites.umflint.com.quickbites.Utilities.DatabaseAccessor;
-import quickbites.umflint.com.quickbites.Utilities.MenuListAdapter;
+import quickbites.umflint.com.quickbites.Utilities.RatingListAdapterUser;
 import quickbites.umflint.com.quickbites.Utilities.RecyclerTouchListener;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -30,49 +30,58 @@ public class ProfileActivity extends AppCompatActivity {
     CircularImageView profilePicture;
     @BindView(R.id.FirstName)
     TextView firstName;
-    @BindView(R.id.NumOfRatings)
-    TextView numOfRatings;
-    @BindView(R.id.FavoritesTitle)
-    TextView favoritesTitle;
-    @BindView(R.id.FavoritesRecyclerView)
-    RecyclerView favoritesRecycler;
     @BindView(R.id.RatingsTitle)
     TextView ratingsTitle;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private MenuListAdapter menuListAdapter;
+    List<HashMap<String, String>> ratingsList = new ArrayList<>();
     private DatabaseAccessor databaseAccessor;
+    FirebaseAuth auth;
+    private RatingListAdapterUser ratingListAdapterUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        final String profile_uid = getIntent().getStringExtra("PROFILE_UID");
+
         ButterKnife.bind(this);
         recyclerView = findViewById(R.id.RatingsRecyclerView);
-        recyclerView.setAdapter(menuListAdapter);
+        recyclerView.setAdapter(ratingListAdapterUser);
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         setTitle("Profile");
+        String userID = FirebaseAuth.getInstance().getUid();
+
 
         databaseAccessor = DatabaseAccessor.getInstance();
+        Query query = databaseAccessor.getDatabaseReference().child("ratings_by_user").child(profile_uid);
+        Query user_information = databaseAccessor.getDatabaseReference().child("users").child("customers").child(profile_uid);
 
-        Query query = databaseAccessor.getDatabaseReference()
-                .child("MenuItem");
+        databaseAccessor.access(false, user_information, new DatabaseAccessor.OnGetDataListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                HashMap<String, String> user_data = (HashMap<String, String>) dataSnapshot.getValue();
+                firstName.setText(user_data.get("firstName") + " " + user_data.get("lastName"));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         databaseAccessor.access(false, query, new DatabaseAccessor.OnGetDataListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<HashMap<String, String>> menuHashMap = new ArrayList<>();
-                HashMap<String, String> current_item;
-
-                for (DataSnapshot menu_item : dataSnapshot.getChildren()) {
-                    current_item = (HashMap<String, String>) menu_item.getValue();
-                    menuHashMap.add(current_item);
+                for (DataSnapshot rating : dataSnapshot.getChildren()) {
+                    for (DataSnapshot single_rating : rating.getChildren()) {
+                        ratingsList.add((HashMap<String, String>) single_rating.getValue());
+                    }
                 }
-
-                menuListAdapter = new MenuListAdapter(menuHashMap);
-                recyclerView.setAdapter(menuListAdapter);
+                ratingListAdapterUser = new RatingListAdapterUser(ratingsList);
+                recyclerView.setAdapter(ratingListAdapterUser);
             }
 
             @Override

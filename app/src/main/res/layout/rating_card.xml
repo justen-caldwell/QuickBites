@@ -10,20 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/menu_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:text="$6.99"
-            android:textAlignment="textEnd"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <RatingBar
-            android:id="@+id/menu_item_rating"
+            android:id="@+id/user_ratingValue"
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -37,14 +25,14 @@
             app:layout_constraintTop_toBottomOf="@+id/rating_userName" />
 
         <TextView
-            android:id="@+id/menu_item_name"
+            android:id="@+id/rating_userName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="27dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:singleLine="true"
-            android:text="Poutine"
+            android:text="Michael Spradling"
             android:textAlignment="textStart"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"

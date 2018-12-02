@@ -10,14 +10,15 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -27,7 +28,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -38,13 +38,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import quickbites.umflint.com.quickbites.Utilities.DatabaseAccessor;
-
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -56,7 +52,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     Marker mCurrLocationMarker;
     LocationRequest mLocationRequest;
     private GoogleMap mMap;
-
+    private FloatingActionButton profileButton;
     private DatabaseAccessor databaseAccessor;
     FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -65,8 +61,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_map_activity);
 
+        profileButton = findViewById(R.id.ProfileButton);
         auth = FirebaseAuth.getInstance();
         final String userID = auth.getCurrentUser().getUid();
+
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+                intent.putExtra("PROFILE_UID", userID);
+                startActivity(intent);
+            }
+        });
 
         checkLocationPermission();
         SupportMapFragment mapFragment = (SupportMapFragment)
@@ -178,6 +184,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
                     @Override
                     public void onMarkerDragStart(Marker marker) {
+                        marker.setDraggable(false);
                         String uniqueID = marker.getTag().toString();
                         Toast.makeText(getApplicationContext(),"Clicked on: " + marker.getTitle() + " @ " + marker.getTag(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), ViewMenu.class);
@@ -192,9 +199,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
                     @Override
                     public void onMarkerDragEnd(Marker marker) {
-
                     }
-                 });
+                });
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override

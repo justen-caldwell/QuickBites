@@ -24,33 +24,22 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/RatingsRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/RatingsTitle" />
+                    app:layout_constraintTop_toBottomOf="@+id/RatingsTitle">
 
-                <TextView
-                    android:id="@+id/FavoritesTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Favorites"
-                    android:textSize="18sp"
-                    app:layout_constraintStart_toStartOf="@+id/FavoritesRecyclerView"
-                    app:layout_constraintTop_toBottomOf="@+id/NumOfRatings" />
+                </android.support.v7.widget.RecyclerView>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/FavoritesRecyclerView"
+                <View
+                    android:id="@+id/divider2"
                     android:layout_width="match_parent"
-                    android:layout_height="181dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="2dp"
-                    android:clickable="false"
-                    app:layout_constraintBottom_toTopOf="@+id/RatingsTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/FavoritesTitle"
-                    tools:itemCount="3" />
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintTop_toBottomOf="@+id/FirstName" />
 
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:id="@+id/ProfilePicture"
@@ -67,17 +56,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/NumOfRatings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Ratings: 0"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/FirstName" />
 
                 <TextView
                     android:id="@+id/FirstName"
@@ -103,9 +81,10 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/ratings"
-                    android:textSize="18sp"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/FavoritesRecyclerView" />
+                    app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
